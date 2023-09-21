@@ -30,19 +30,18 @@ module.exports = async ({getNamedAccounts, deployments }) => {
 
     log('-------------------');
     log('Deploying Lottery contract and waiting for block confirmations')
-    // const Lottery = await deploy('Lottery',{
-    //     from: deployer,
-    //     args,
-    //     logs:true,
-    //     waitConfirmations: network.config.blockConfirmations || 1,
-    // })
-//     if(developmentChains.includes(network.name)){
-//         await vrfCoordinator.addConsumer(subscriptionId,Lottery.address)    
-// }
-    // log('Lottery contract deployed at ', Lottery.address)
+    const Lottery = await deploy('Lottery',{
+        from: deployer,
+        args,
+        logs:true,
+        waitConfirmations: network.config.blockConfirmations || 1,
+    })
+    if(developmentChains.includes(network.name)){
+        await vrfCoordinator.addConsumer(subscriptionId,Lottery.address)    
+}
+    log('Lottery contract deployed at ', Lottery.address)
     if(!developmentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY){
         log('verifying lottery contract')
-        // await verify(Lottery.address,args)
         await verify("0x94d8f57a75005670f0c2dd0c90caefc1becf14e1",args)
     }
 }
